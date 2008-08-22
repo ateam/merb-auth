@@ -17,6 +17,7 @@ describe MerbAuth do
   before(:each) do
     register_activerecord!
     register_datamapper!
+    register_sequel!
   end
   
   after(:each) do
@@ -42,6 +43,10 @@ describe MerbAuth do
   def register_datamapper!
     MA.register_adapter :datamapper, "#{@adapter_path}/datamapper"
   end
+
+  def register_sequel!
+    MA.register_adapter :sequel, "#{@adapter_path}/sequel"
+  end
   
   describe "Adapter Loading" do
   
@@ -59,6 +64,7 @@ describe MerbAuth do
       MA.adapters.should be_a_kind_of(Hash)
       MA.adapters.keys.should include(:activerecord)
       MA.adapters.keys.should include(:datamapper)
+      MA.adapters.keys.should include(:sequel)
     end
   
     it "should load the adapter" do

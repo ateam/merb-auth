@@ -17,7 +17,7 @@ module MerbAuth
           end
         
           def find_all_with_login_like(logn)
-            filter(:login.like => logn, :order => [:login.desc], :limit => 1)
+            filter(:login.like(logn)).order(:login.desc).limit(1)
           end
                   
           def find_active_with_conditions(conditions)
@@ -25,7 +25,7 @@ module MerbAuth
           end
         
           def clear_database_table
-            delete_all
+            delete
           end
         end # ClassMethods 
         

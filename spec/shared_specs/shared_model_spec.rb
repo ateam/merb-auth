@@ -39,14 +39,14 @@ describe "A MerbAuth User Model", :shared => true do
       user = MA[:user].new
       user.should respond_to(:login)
       user.valid?
-      user.errors.on(:login).should_not be_nil
+      user.errors.on(:login).should_not be_blank
     end
     
     it "should have an email field" do
       user = MA[:user].new
       user.should respond_to(:email)
       user.valid?
-      user.errors.on(:email).should_not be_nil      
+      user.errors.on(:email).should_not be_blank    
     end
     
     it "should add on some random numbers on the end if the username is already taken" do 
@@ -78,7 +78,7 @@ describe "A MerbAuth User Model", :shared => true do
       user = MA[:user].new
       user.login = "AB"
       user.valid?
-      user.errors.on(:login).should_not be_nil
+      user.errors.on(:login).should_not be_blank
     end
     
     it "should not fail login with between 3 and 40 chars" do
@@ -86,7 +86,7 @@ describe "A MerbAuth User Model", :shared => true do
       [3,40].each do |num|
         user.login = "a" * num
         user.valid?
-        user.errors.on(:login).should be_nil
+        user.errors.on(:login).should be_blank
       end
     end
     
@@ -94,7 +94,7 @@ describe "A MerbAuth User Model", :shared => true do
       user = MA[:user].new
       user.login = "A" * 41
       user.valid?
-      user.errors.on(:login).should_not be_nil    
+      user.errors.on(:login).should_not be_blank  
     end
     
     it "should make sure login is unique regardless of case" do
@@ -105,7 +105,7 @@ describe "A MerbAuth User Model", :shared => true do
       user.should_not be_a_new_record
       user2.save
       user2.should be_a_new_record
-      user2.errors.on(:login).should_not be_nil
+      user2.errors.on(:login).should_not be_blank
     end
     
     it "should downcase logins" do
@@ -189,7 +189,7 @@ describe "A MerbAuth User Model", :shared => true do
       [3,41].each do |num|
         user = MA[:user].new(valid_user_hash.with(:password => ("a" * num)))
         user.valid?
-        user.errors.on(:password).should_not be_nil
+        user.errors.on(:password).should_not be_blank
       end
     end
 
@@ -197,7 +197,7 @@ describe "A MerbAuth User Model", :shared => true do
       [4,30,40].each do |num|
         user = MA[:user].new(valid_user_hash.with(:password => ("a" * num), :password_confirmation => ("a" * num)))
         user.valid?
-        user.errors.on(:password).should be_nil
+        user.errors.on(:password).should be_blank
       end    
     end
 
@@ -217,7 +217,7 @@ describe "A MerbAuth User Model", :shared => true do
       user.password.should be_nil
       user.password_confirmation.should be_nil
       user.login = "some_different_login_to_allow_saving"
-      (user.save).should be_true
+      (user.save).should if user
     end
     
   end
@@ -409,14 +409,14 @@ describe "A MerbAuth User Model", :shared => true do
       today = DateTime.now
       remember_until = today + (2* Merb::Const::WEEK) / Merb::Const::DAY
       @user.remember_me_for( Merb::Const::WEEK * 2)
-      @user.remember_token_expires_at.should == (remember_until)
+      @user.remember_token_expires_at.should be_close(remember_until, 0.0001)
     end
 
     it "should remember_me for two weeks" do
       t = DateTime.now
       DateTime.stub!(:now).and_return(t)
       @user.remember_me
-      @user.remember_token_expires_at.should == (DateTime.now + (2 * Merb::Const::WEEK ) / Merb::Const::DAY)
+      @user.remember_token_expires_at.should be_close(DateTime.now + (2 * Merb::Const::WEEK ) / Merb::Const::DAY, 0.0001)
     end
 
     it "should forget me" do
