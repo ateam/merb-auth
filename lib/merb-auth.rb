@@ -16,6 +16,7 @@ if defined?(Merb::Plugins)
   MA = MerbAuth
   MA.register_adapter :datamapper, "#{adapter_path}/datamapper"
   MA.register_adapter :activerecord, "#{adapter_path}/activerecord"
+  MA.register_adapter :sequel, "#{adapter_path}/sequel"
   
   Merb::Plugins.add_rakefiles "merb-auth/merbtasks", "merb-auth/slicetasks"
 
