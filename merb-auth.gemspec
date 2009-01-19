@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
     "lib/merb-auth/controller/controller.rb",
     "lib/merb-auth/merbtasks.rb",
     "lib/merb-auth.rb",
+    "lib/ateam-merb-auth.rb",
     "TODO",
     "spec/spec_helpers/valid_model_hashes.rb",
     "spec/spec_helpers/helpers.rb",
